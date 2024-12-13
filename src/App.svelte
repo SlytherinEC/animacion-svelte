@@ -9,82 +9,96 @@
   let backgroundX = 0; // Posición del fondo en el eje X
   let backgroundY = 0; // Posición del fondo en el eje Y
   const backgroundStep = 5; // Cantidad de píxeles que el fondo se mueve por paso
+  const animationSpeed = 100; // Velocidad de animación en ms
+  let intervalId = null; // Intervalo para animar
+
+  const stopAnimation = () => {
+    clearInterval(intervalId);
+  };
 
   // Función para mover el personaje a la izquierda
   const moveLeft = () => {
-    frameX = (frameX - 1 + frameCountX) % frameCountX;
+    stopAnimation();
+      frameX = (frameX - 1 + frameCountX) % frameCountX;
   };
 
   // Función para mover el personaje a la derecha
   const moveRight = () => {
-    frameX = (frameX + 1) % frameCountX;
+    stopAnimation();
+
+      frameX = (frameX + 1) % frameCountX;
   };
 
   // Función para simular caminar
   const walk = () => {
-    if (frameY === 0 || frameY > frameCountY) {
-      frameY = 4;
-    }
-    frameY = frameY + 1; // Ciclo de 9 fotogramas para caminar
+    stopAnimation();
 
-    // Ajustar la posición del fondo para simular el movimiento
+    intervalId = setInterval(() => {
+      if (frameY === 0 || frameY > frameCountY) {
+        frameY = 4;
+      }
+      frameY = frameY + 1; // Ciclo de 9 fotogramas para caminar
 
-    switch (frameX) {
-      case 0:
-      case 1:
-        backgroundY += backgroundStep;
-        break;
-      case 2:
-      case 3:
-        backgroundY += backgroundStep;
-        backgroundX -= 3;
+      // Ajustar la posición del fondo para simular el movimiento
 
-        break;
-      case 4:
-      case 5:
-        backgroundY += backgroundStep;
-        backgroundX -= backgroundStep;
-        break;
-      case 6:
-      case 7:
-        backgroundY += 3;
-        backgroundX -= backgroundStep;
-        break;
-      case 8:
-      case 9:
-        backgroundX -= backgroundStep;
-        break;
-      case 10:
-      case 11:
-        backgroundY -= 3;
-        backgroundX -= backgroundStep;
-        break;
-      case 12:
-      case 13:
-        backgroundY -= backgroundStep;
-        backgroundX -= backgroundStep;
-        break;
-      case 14:
-      case 15:
-        backgroundY -= backgroundStep;
-        backgroundX -= 3;
-      case 16:
-        backgroundY -= backgroundStep;
-        break;
-    }
+      switch (frameX) {
+        case 0:
+        case 1:
+          backgroundY += backgroundStep;
+          break;
+        case 2:
+        case 3:
+          backgroundY += backgroundStep;
+          backgroundX -= 3;
+
+          break;
+        case 4:
+        case 5:
+          backgroundY += backgroundStep;
+          backgroundX -= backgroundStep;
+          break;
+        case 6:
+        case 7:
+          backgroundY += 3;
+          backgroundX -= backgroundStep;
+          break;
+        case 8:
+        case 9:
+          backgroundX -= backgroundStep;
+          break;
+        case 10:
+        case 11:
+          backgroundY -= 3;
+          backgroundX -= backgroundStep;
+          break;
+        case 12:
+        case 13:
+          backgroundY -= backgroundStep;
+          backgroundX -= backgroundStep;
+          break;
+        case 14:
+        case 15:
+          backgroundY -= backgroundStep;
+          backgroundX -= 3;
+        case 16:
+          backgroundY -= backgroundStep;
+          break;
+      }
+    }, animationSpeed);
   };
 
   // Función para simular disparar
   const shoot = () => {
-    if (frameY >= 0 && frameY < 3) {
-      frameY = frameY + 1;
-    } else if (frameY >= 4) {
-      frameY = 3;
-    } else {
-      frameY = 2;
-    }
-
-    console.log(frameY);
+    stopAnimation();
+    intervalId = setInterval(() => {
+      if (frameY >= 0 && frameY < 3) {
+        frameY = frameY + 1;
+      } else if (frameY >= 4) {
+        frameY = 3;
+      } else {
+        frameY = 2;
+      }
+    }, animationSpeed);
   };
 </script>
 
