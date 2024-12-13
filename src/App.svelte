@@ -1,26 +1,38 @@
 <script>
   import Character from "./lib/Character.svelte";
+
+  let frame = 0; // Fotograma actual del personaje
+  const frameCount = 17; // Total de fotogramas en el eje horizontal
+
+  // Función para mover el personaje a la izquierda
+  const moveLeft = () => {
+    frame = (frame - 1 + frameCount) % frameCount;
+  };
+
+  // Función para mover el personaje a la derecha
+  const moveRight = () => {
+    frame = (frame + 1) % frameCount;
+  };
 </script>
 
 <main>
   <div class="container">
     <!-- Sección de la pantalla -->
     <div class="screen">
-      <Character />
+      <Character {frame} />
     </div>
 
     <!-- Sección de los botones -->
     <div class="buttons">
-      <button class="left">Turn Left</button>
+      <button class="left" on:click={moveLeft}>Turn Left</button>
       <button class="up">Walk</button>
       <button class="down">Shoot</button>
-      <button class="right">Turn Right</button>
+      <button class="right" on:click={moveRight}>Turn Right</button>
     </div>
   </div>
 </main>
 
 <style>
-  /* Contenedor principal centrado */
   .container {
     display: flex;
     flex-direction: column;
@@ -31,23 +43,20 @@
     text-align: center;
   }
 
-  /* Sección de la pantalla */
   .screen {
-    width: 320px; /* Ancho de la pantalla */
-    height: 320px; /* Alto de la pantalla */
-    margin-bottom: 20px; /* Separación entre la pantalla y los botones */
+    width: 320px;
+    height: 320px;
+    margin-bottom: 20px;
   }
 
-  /* Sección de los botones */
   .buttons {
     display: grid;
-    grid-template-rows: repeat(3, 1fr); /* Tres filas */
-    grid-template-columns: repeat(3, 1fr); /* Tres columnas */
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    width: 180px; /* Ancho total de los botones */
+    width: 180px;
   }
 
-  /* Estilo de los botones */
   .buttons button {
     padding: 10px;
     font-size: 14px;
@@ -57,7 +66,6 @@
     background-color: #f0f0f0;
   }
 
-  /* Posicionamiento de los botones en forma de cruceta */
   .left {
     grid-row: 2;
     grid-column: 1;
@@ -67,7 +75,7 @@
     grid-column: 2;
   }
   .down {
-    grid-row: 2;
+    grid-row: 3;
     grid-column: 2;
   }
   .right {
