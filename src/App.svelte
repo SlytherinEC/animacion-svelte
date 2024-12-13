@@ -6,6 +6,10 @@
   const frameCountX = 17; // Total de fotogramas en el eje horizontal
   const frameCountY = 11; // Total de fotogramas en el eje vertical (caminar)
 
+  let backgroundX = 0; // Posición del fondo en el eje X
+  let backgroundY = 0; // Posición del fondo en el eje Y
+  const backgroundStep = 5; // Cantidad de píxeles que el fondo se mueve por paso
+
   // Función para mover el personaje a la izquierda
   const moveLeft = () => {
     frameX = (frameX - 1 + frameCountX) % frameCountX;
@@ -21,30 +25,76 @@
     if (frameY === 0 || frameY > frameCountY) {
       frameY = 4;
     }
-    frameY = (frameY + 1) ; // Ciclo de 9 fotogramas para caminar
-    console.log(`coordenadas: ${frameX}, ${frameY}`);
+    frameY = frameY + 1; // Ciclo de 9 fotogramas para caminar
+
+    // Ajustar la posición del fondo para simular el movimiento
+
+    switch (frameX) {
+      case 0:
+      case 1:
+        backgroundY += backgroundStep;
+        break;
+      case 2:
+      case 3:
+        backgroundY += backgroundStep;
+        backgroundX -= 3;
+
+        break;
+      case 4:
+      case 5:
+        backgroundY += backgroundStep;
+        backgroundX -= backgroundStep;
+        break;
+      case 6:
+      case 7:
+        backgroundY += 3;
+        backgroundX -= backgroundStep;
+        break;
+      case 8:
+      case 9:
+        backgroundX -= backgroundStep;
+        break;
+      case 10:
+      case 11:
+        backgroundY -= 3;
+        backgroundX -= backgroundStep;
+        break;
+      case 12:
+      case 13:
+        backgroundY -= backgroundStep;
+        backgroundX -= backgroundStep;
+        break;
+      case 14:
+      case 15:
+        backgroundY -= backgroundStep;
+        backgroundX -= 3;
+      case 16:
+        backgroundY -= backgroundStep;
+        break;
+    }
   };
 
-    // Función para simular disparar
-    const shoot = () => {
-    if (frameY >= 0  && frameY < 3) {
+  // Función para simular disparar
+  const shoot = () => {
+    if (frameY >= 0 && frameY < 3) {
       frameY = frameY + 1;
-    }else if( frameY >= 4){
+    } else if (frameY >= 4) {
       frameY = 3;
-    }else{
+    } else {
       frameY = 2;
     }
 
-      console.log(frameY);
-
+    console.log(frameY);
   };
-
 </script>
 
 <main>
   <div class="container">
     <!-- Sección de la pantalla -->
-    <div class="screen">
+    <div
+      class="screen"
+      style="background-position: {backgroundX}px {backgroundY}px;"
+    >
       <Character {frameX} {frameY} />
     </div>
 
@@ -75,13 +125,12 @@
     margin-bottom: 20px;
     border: 5px solid #000;
     border-radius: 5px;
-    background-image: url('/src/assets/ground.gif');
-    
+    background-image: url("/src/assets/ground.gif");
   }
 
   .buttons {
     display: grid;
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     width: 180px;
@@ -105,7 +154,7 @@
     grid-column: 2;
   }
   .down {
-    grid-row: 3;
+    grid-row: 2;
     grid-column: 2;
   }
   .right {
