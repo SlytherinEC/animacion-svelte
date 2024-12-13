@@ -1,32 +1,58 @@
 <script>
   import Character from "./lib/Character.svelte";
 
-  let frame = 0; // Fotograma actual del personaje
-  const frameCount = 17; // Total de fotogramas en el eje horizontal
+  let frameX = 0; // Fotograma actual en el eje horizontal
+  let frameY = 4; // Fotograma actual en el eje vertical
+  const frameCountX = 17; // Total de fotogramas en el eje horizontal
+  const frameCountY = 11; // Total de fotogramas en el eje vertical (caminar)
 
   // Función para mover el personaje a la izquierda
   const moveLeft = () => {
-    frame = (frame - 1 + frameCount) % frameCount;
+    frameX = (frameX - 1 + frameCountX) % frameCountX;
   };
 
   // Función para mover el personaje a la derecha
   const moveRight = () => {
-    frame = (frame + 1) % frameCount;
+    frameX = (frameX + 1) % frameCountX;
   };
+
+  // Función para simular caminar
+  const walk = () => {
+    if (frameY === 0 || frameY > frameCountY) {
+      frameY = 4;
+    }
+    frameY = (frameY + 1) ; // Ciclo de 9 fotogramas para caminar
+    console.log(`coordenadas: ${frameX}, ${frameY}`);
+  };
+
+    // Función para simular disparar
+    const shoot = () => {
+    if (frameY >= 0  && frameY < 3) {
+      frameY = frameY + 1;
+    }else if( frameY >= 4){
+      frameY = 3;
+    }else{
+      frameY = 2;
+    }
+
+      console.log(frameY);
+
+  };
+
 </script>
 
 <main>
   <div class="container">
     <!-- Sección de la pantalla -->
     <div class="screen">
-      <Character {frame} />
+      <Character {frameX} {frameY} />
     </div>
 
     <!-- Sección de los botones -->
     <div class="buttons">
       <button class="left" on:click={moveLeft}>Turn Left</button>
-      <button class="up">Walk</button>
-      <button class="down">Shoot</button>
+      <button class="up" on:click={walk}>Walk</button>
+      <button class="down" on:click={shoot}>Shoot</button>
       <button class="right" on:click={moveRight}>Turn Right</button>
     </div>
   </div>
@@ -47,6 +73,10 @@
     width: 320px;
     height: 320px;
     margin-bottom: 20px;
+    border: 5px solid #000;
+    border-radius: 5px;
+    background-image: url('/src/assets/ground.gif');
+    
   }
 
   .buttons {
