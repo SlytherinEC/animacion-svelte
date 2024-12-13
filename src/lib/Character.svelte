@@ -1,34 +1,38 @@
 <script>
   let frame = 0; // Controla el fotograma actual
-  const frameCount = 17; // Cambia según la cantidad total de fotogramas que desees usar
-  const frameWidth = 64; // Ajusta según el ancho de cada fotograma en píxeles
-  const frameHeight = 64; // Ajusta según la altura de cada fotograma en píxeles
-  const animationSpeed = 100; // Velocidad en ms por fotograma
+  const frameCount = 17; // Número total de fotogramas
+  const frameWidth = 64; // Ancho de cada fotograma en píxeles
+  const frameHeight = 64; // Altura de cada fotograma en píxeles
+  const animationSpeed = 200; // Velocidad de la animación en milisegundos
 
   // Cambiar fotogramas automáticamente
-  setInterval(() => {
+  const interval = setInterval(() => {
     frame = (frame + 1) % frameCount;
+    console.log(frame);
   }, animationSpeed);
+
+  // Limpieza del intervalo cuando el componente se destruya
+  import { onDestroy } from "svelte";
+  onDestroy(() => {
+    clearInterval(interval);
+  });
 </script>
 
+<!-- Aquí se usan las variables directamente en el atributo style -->
 <div
   class="character"
   style="
---frame: {frame};
---frame-width: {frameWidth}px;
---frame-height: {frameHeight}px;
-"
+    width: {frameWidth}px;
+    height: {frameHeight}px;
+    background-image: url('/src/assets/starcraft-marine.png');
+    background-position: {-(frame * frameWidth)}px 0px;
+    background-repeat: no-repeat;
+  "
 ></div>
 
 <style>
   .character {
-    width: var(--frame-width, 64px); /* Ancho del contenedor */
-    height: var(--frame-height, 64px); /* Altura del contenedor */
-    background-image: url("./src/assets/starcraft-marine.png"); /* Ruta de la imagen */
-    /* background-position: 0px 0px; Ajusta para centrar la porción deseada */
-    /* background-size: auto; Mantén el tamaño original */
-    background-position: calc(var(--frame) * -1 * var(--frame-width, 64px)) 0px;
-    background-repeat: no-repeat; /* Evita que se repita la imagen */
     background-color: tomato;
+    margin: 128px auto;
   }
 </style>
